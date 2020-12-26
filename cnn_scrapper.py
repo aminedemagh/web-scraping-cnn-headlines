@@ -10,11 +10,14 @@ lis = section1.find_elements_by_xpath(".//child::li")
 hrefs = []
 #print(lis.text)
 for li in lis:    
-    href = li.find_elements_by_xpath(".//child::a")
-    shref = [ref.get_attribute('href') for ref in href]
-    atext = [ref.text for ref in href]
-    print(li.text + "\n ------------------------------------\n" + str(shref)
-     + "\n-----------------------------------------\n" + str(atext) 
-      +"\n _______________________________________________________________ \n")
+    atags = li.find_elements_by_xpath(".//child::a")
+    headlines = []
+    for a in atags:
+        title = a.text
+        if title == "": continue
+        href = a.get_attribute('href')
+        headlines.append((title, href))
+    print(li.text + "\n ------------------------------------\n" + str(headlines)
+    +"\n _______________________________________________________________ \n")
 
 #intl_homepage1-zone-1
