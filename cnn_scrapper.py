@@ -12,6 +12,9 @@ hrefs = []
 for li in lis:    
     href = li.find_elements_by_xpath(".//child::a")
     shref = [ref.get_attribute('href') for ref in href]
-    print(li.text + "\n ------------------------------------\n" + str(shref) +"\n _______________________________________________________________ \n")
+    atext = [ref.text for ref in href]
+    print(li.text + "\n ------------------------------------\n" + str(shref)
+     + "\n-----------------------------------------\n" + str(atext) 
+      +"\n _______________________________________________________________ \n")
 
 #intl_homepage1-zone-1
