@@ -1,8 +1,13 @@
 from selenium import webdriver
 from phantomjs import phantom
 #driver = webdriver.Chrome(r"C:/Users/ACER/Desktop/chromedriver.exe")
-driver = webdriver.PhantomJS("phantomjs.exe")
-driver.set_window_size(1120, 550)
+def getWebDriver():
+    ''' Returns a phantomjs WebDriver'''
+    driver = webdriver.PhantomJS("phantomjs.exe")
+    driver.set_window_size(1120, 550)
+    return driver
+
+driver = getWebDriver()
 driver.get('https://edition.cnn.com')
 # Fetch the first section of the cnn website
 section1 = driver.find_element_by_id("intl_homepage1-zone-1")
