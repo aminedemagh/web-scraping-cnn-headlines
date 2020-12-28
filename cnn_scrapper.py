@@ -8,6 +8,19 @@ def getWebDriver():
     return driver
 
 def getHeadlines(webdriver):
+    ''' Returns a list of tuples of the first headlines of https://edition.cnn.com
+        Each tuple contains the title and the corresponding href
+
+    Parameters
+    ----------
+    webdriver : webdriver
+        A webdriver instance used to get the cnn webpage
+    
+    Returns
+    -------
+    list
+        A list of tuples containing (the title, the href) of each headline
+    '''
     webdriver.get('https://edition.cnn.com')
     # Fetch the first section of the cnn website
     # id = intl_homepage1-zone-1
@@ -17,11 +30,12 @@ def getHeadlines(webdriver):
     # Each li tag contains a set of a tags
     # Some a tags contain images and others text 
     # This app is only interested in text and their corresponding href
+    headlines = []
     for li in lis:
         # Ignore the iteration if the li tags doesn't contain any text
         if li.text == '' : continue    
         atags = li.find_elements_by_xpath(".//child::a")
-        headlines = []
+        
         for a in atags:
             # Extract the titles
             title = a.text
@@ -30,11 +44,13 @@ def getHeadlines(webdriver):
             # Extract the corresponding href
             href = a.get_attribute('href')
             headlines.append((title, href))
-        print(li.text + "\n ------------------------------------\n" + str(headlines)
-        +"\n _______________________________________________________________ \n")
+
+    return headlines 
 
 driver = getWebDriver()
-getHeadlines(driver)
+headlines = getHeadlines(driver)
+for headline in headlines:
+    print(headline)
 
 
 
