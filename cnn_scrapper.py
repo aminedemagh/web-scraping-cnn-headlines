@@ -1,6 +1,6 @@
 from selenium import webdriver
 from phantomjs import phantom
-#driver = webdriver.Chrome(r"C:/Users/ACER/Desktop/chromedriver.exe")
+
 def getWebDriver():
     ''' Returns a phantomjs WebDriver'''
     driver = webdriver.PhantomJS("phantomjs.exe")
