@@ -7,6 +7,11 @@ def getWebDriver():
     driver.set_window_size(1120, 550)
     return driver
 
+def format_title(title):
+    ''' Returns the given string without '•' character and after
+        removing any leading or trailing whitespaces'''
+    return title.replace('•', '').strip()
+
 def getHeadlines(webdriver):
     ''' Returns a list of tuples of the first headlines of https://edition.cnn.com
         Each tuple contains the title and the corresponding href
@@ -43,6 +48,8 @@ def getHeadlines(webdriver):
             if title == "" : continue
             # Extract the corresponding href
             href = a.get_attribute('href')
+            # Format title
+            title = format_title(title)
             headlines.append((title, href))
 
     return headlines 
