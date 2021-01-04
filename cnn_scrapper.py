@@ -54,10 +54,26 @@ def getHeadlines(webdriver):
 
     return headlines 
 
+def get_articles(driver, headlines):
+
+    for title, href in headlines:
+        driver.get(href)
+        # Get the ptag that contains the date
+        pdate = driver.find_elements_by_xpath('//p[@class="update-time"]')
+        date = None
+        if len(pdate) == 0:
+            continue
+        else:
+            date = pdate[0].text
+
+        print("Article title: " + title + "\n"
+             + "Article href: " + href + "\n"
+             + "Article date: " + date + "\n"
+             + "-------------------------------------------------------------------------\n")
+
 driver = getWebDriver()
 headlines = getHeadlines(driver)
-for headline in headlines:
-    print(headline)
+get_articles(driver, headlines)
 
 
 
