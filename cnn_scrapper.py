@@ -54,9 +54,28 @@ def getHeadlines(webdriver):
 
     return headlines 
 
+def is_article_supported(href):
+    is_supported = False
+    # Split the link into different part
+    # The 3rd element indicates if the href is pointing 
+    # to a general article: 'https://edition.cnn.com/2021/01/02/media/larry-king-covid-19/index.html'
+    # or an article from a sub domain: 'https://edition.cnn.com/politics'
+    # Here the number '2021'after 'edition.cnn.com' means that it's a general article that
+    # is supported by this webscrapper.
+    # The 'politics' in the second link means that it's from a subdomain and they
+    # are not supported for now 
+    link_elements = href.split('/')
+
+    if link_elements[3].isnumeric():
+        is_supported = True
+
+    return is_supported
+
 def get_articles(driver, headlines):
 
     for title, href in headlines:
+        # Ignore the article if it's not supported
+        if not is_article_supported(href) : continue
         driver.get(href)
         # Get the ptag that contains the date
         pdate = driver.find_elements_by_xpath('//p[@class="update-time"]')
