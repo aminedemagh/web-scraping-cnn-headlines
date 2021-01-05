@@ -84,10 +84,19 @@ def get_articles(driver, headlines):
             continue
         else:
             date = pdate[0].text
-
+        
+        # Get the paragraphs of the articles
+        # They can be either in <div> or <p>
+        paragraphs = driver.find_elements_by_xpath("//*[contains(@class, 'zn-body__paragraph')]")
+        # Gather all the paragraphs in a signle content variable
+        content = ""
+        for p in paragraphs:
+            content += p.text + "\n"
+        
         print("Article title: " + title + "\n"
              + "Article href: " + href + "\n"
-             + "Article date: " + date + "\n"
+             + "Article date: " + date + "\n\n"
+             + "Article content:\n" + content + "\n"
              + "-------------------------------------------------------------------------\n")
 
 driver = getWebDriver()
