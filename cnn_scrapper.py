@@ -107,21 +107,17 @@ def is_article_supported(href):
 
     return is_supported
 
-def get_articles(driver, headlines):
-    #for headline in headlines:
-    #    print(headline)
-    for title, href in headlines:
-        # Ignore the article if it's not supported
-        if not is_article_supported(href) : continue
-        driver.get(href)
-        # Get the ptag that contains the date
-        pdate = driver.find_elements_by_xpath('//p[@class="update-time"]')
-        date = None
-        if len(pdate) == 0:
-            continue
-        else:
-            date = pdate[0].text
-        
+def get_article(driver, href):
+
+    driver.get(href)
+    # Get the ptag that contains the date
+    pdate = driver.find_elements_by_xpath('//p[@class="update-time"]')
+    date = None
+    if len(pdate) == 0:
+        return
+
+    else:
+        date = pdate[0].text       
         # Get the paragraphs of the articles
         # They can be either in <div> or <p>
         paragraphs = driver.find_elements_by_xpath("//*[contains(@class, 'zn-body__paragraph')]")
@@ -129,18 +125,27 @@ def get_articles(driver, headlines):
         content = ""
         for p in paragraphs:
             content += p.text + "\n"
+
+        return (date, content)
         
-        for t in title:
-            print("Article title: " + t + "\n"
-                + "Article href: " + href + "\n"
-                + "Article date: " + date + "\n\n"
-                + "Article content:\n" + content + "\n"
-                + "-------------------------------------------------------------------------\n")
+
 
 driver = getWebDriver()
 headlines = getHeadlines(driver)
-get_articles(driver, headlines)
 
+for titles, href in headlines:
+    # Ignore the article if it's not supported
+    if not is_article_supported(href) : continue
+    article = get_article(driver, href)
+    if article is None : continue
+    else:
+        date, content = article
+        for title in titles:
+            print("Article title: " + title + "\n"
+            + "Article href: " + href + "\n"
+            + "Article date: " + date + "\n\n"
+            + "Article content:\n" + content + "\n"
+            + "-------------------------------------------------------------------------\n")
 
 
 
