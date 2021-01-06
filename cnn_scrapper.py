@@ -12,6 +12,39 @@ def format_title(title):
         removing any leading or trailing whitespaces'''
     return title.replace('•', '').strip()
 
+def group_titles(headlines):
+    '''Returns a list of tuples where each tuple is of the form (list of
+       titles corresponding to a signle href, the href).
+       This list is generared from the given list of tuples of the form (title, href)
+       that contains distinc tuples for different titles with the same href.
+       This function groups the titles that share the same href in a single tuple
+    
+    Parameters:
+    ---------
+    headlines : list
+        A list of tuples of the form (title, href)
+
+    Returns
+    -------
+    list
+        A list of tuples of the form ([list of titles], href)
+    
+    '''
+    # Get a list of the unique hrefs
+    unique_hrefs = list(set([href for _, href in headlines]))
+    grouped_titles = []
+    # Group the corresponding titles for each href
+    for unique_href in unique_hrefs:
+        titles = []
+        # Loops through the headlines to look for
+        # the titles that correspond to the current href
+        for title, href in headlines:
+            if href == unique_href:
+                titles.append(title)
+        grouped_titles.append((titles, href)) 
+
+    return grouped_titles
+
 def getHeadlines(webdriver):
     ''' Returns a list of tuples of the first headlines of https://edition.cnn.com
         Each tuple contains the title and the corresponding href
@@ -40,7 +73,8 @@ def getHeadlines(webdriver):
         # Ignore the iteration if the li tags doesn't contain any text
         if li.text == '' : continue    
         atags = li.find_elements_by_xpath(".//child::a")
-        
+        # The headlines for this list item
+        li_headlines = []
         for a in atags:
             # Extract the titles
             title = a.text
@@ -50,7 +84,9 @@ def getHeadlines(webdriver):
             href = a.get_attribute('href')
             # Format title
             title = format_title(title)
-            headlines.append((title, href))
+            li_headlines.append((title, href))
+        # Group the titles that share the same href
+        headlines = headlines + group_titles(li_headlines)
 
     return headlines 
 
@@ -72,7 +108,8 @@ def is_article_supported(href):
     return is_supported
 
 def get_articles(driver, headlines):
-
+    #for headline in headlines:
+    #    print(headline)
     for title, href in headlines:
         # Ignore the article if it's not supported
         if not is_article_supported(href) : continue
@@ -93,11 +130,12 @@ def get_articles(driver, headlines):
         for p in paragraphs:
             content += p.text + "\n"
         
-        print("Article title: " + title + "\n"
-             + "Article href: " + href + "\n"
-             + "Article date: " + date + "\n\n"
-             + "Article content:\n" + content + "\n"
-             + "-------------------------------------------------------------------------\n")
+        for t in title:
+            print("Article title: " + t + "\n"
+                + "Article href: " + href + "\n"
+                + "Article date: " + date + "\n\n"
+                + "Article content:\n" + content + "\n"
+                + "-------------------------------------------------------------------------\n")
 
 driver = getWebDriver()
 headlines = getHeadlines(driver)
