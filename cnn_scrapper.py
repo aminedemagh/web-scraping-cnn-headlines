@@ -143,7 +143,20 @@ def is_article_supported(href):
     return is_supported
 
 def get_article(driver, href):
-
+    '''Returns the datetime and the article content of the provided URL
+    
+    Parameters
+    ----------
+    driver : webdriver
+        A webdriver instance used to retrive an article
+        
+    href : string
+        The URL of the article to retrieve
+    
+    Returns
+    -------
+    tuple
+        A tuple containing (date, content text) of the retrieved article'''
     driver.get(href)
     # Get the ptag that contains the date
     pdate = driver.find_elements_by_xpath('//p[@class="update-time"]')
