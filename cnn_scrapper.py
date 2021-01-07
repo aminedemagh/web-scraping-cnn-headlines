@@ -1,5 +1,22 @@
 from selenium import webdriver
 from phantomjs import phantom
+import datetime
+
+# Convert month name to month number
+month_to_num = {
+    'january': 1,
+    'February': 2,
+    'march': 3,
+    'april': 4,
+    'may': 5,
+    'june': 6,
+    'july': 7,
+    'august': 8,
+    'september': 9,
+    'october': 10,
+    'november': 11,
+    'december': 12
+}
 
 def getWebDriver():
     ''' Returns a phantomjs WebDriver'''
@@ -44,6 +61,22 @@ def group_titles(headlines):
         grouped_titles.append((titles, href)) 
 
     return grouped_titles
+
+def format_date(datestr):
+    '''Returns the ISO 8601 datetime from the given date string'''
+    date_parts = datestr.split()
+    time = date_parts[1]
+    hour = int(time[0:2])
+    minute = int(time[2:4])
+    month = month_to_num[date_parts[5].lower()]
+    # date_parts[6] returns a number followed
+    # by a comma like '7,' instead of '7'
+    # that's why we need to delete it before converting
+    # it to an integer
+    day = int(date_parts[6].replace(',',''))
+    year = int(date_parts[7])
+    date = datetime.datetime(year, month, day, hour, minute)
+    return date.isoformat()
 
 def getHeadlines(webdriver):
     ''' Returns a list of tuples of the first headlines of https://edition.cnn.com
@@ -117,7 +150,7 @@ def get_article(driver, href):
         return
 
     else:
-        date = pdate[0].text       
+        date = format_date(pdate[0].text)       
         # Get the paragraphs of the articles
         # They can be either in <div> or <p>
         paragraphs = driver.find_elements_by_xpath("//*[contains(@class, 'zn-body__paragraph')]")
