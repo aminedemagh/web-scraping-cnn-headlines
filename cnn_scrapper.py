@@ -124,6 +124,8 @@ def getHeadlines(webdriver):
     return headlines 
 
 def is_article_supported(href):
+    '''Returns True if the provided href is supported by
+       the web scrapper and False if it's not'''
     is_supported = False
     # Split the link into different part
     # The 3rd element indicates if the href is pointing 
