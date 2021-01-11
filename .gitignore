@@ -1,2 +1,3 @@
-ghostdriver.log
-phantomjs.exe
+*.log
+*.exe
+*.sqlite
