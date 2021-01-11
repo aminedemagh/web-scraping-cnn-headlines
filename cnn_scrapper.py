@@ -1,7 +1,7 @@
 from selenium import webdriver
 from phantomjs import phantom
 import datetime
-
+from selenium.webdriver.firefox.options import Options
 # Convert month name to month number
 month_to_num = {
     'january': 1,
@@ -20,8 +20,9 @@ month_to_num = {
 
 def getWebDriver():
     ''' Returns a phantomjs WebDriver'''
-    driver = webdriver.PhantomJS("phantomjs.exe")
-    driver.set_window_size(1120, 550)
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(executable_path="geckodriver.exe", options=options)
     return driver
 
 def format_title(title):
