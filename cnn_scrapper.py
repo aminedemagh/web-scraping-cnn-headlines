@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from phantomjs import phantom
 import datetime
 from selenium.webdriver.firefox.options import Options
@@ -180,21 +181,72 @@ def get_article(driver, href):
 
 
 driver = getWebDriver()
-headlines = getHeadlines(driver)
+succeeded = False
+while not succeeded:
+    try:
+        headlines = getHeadlines(driver)
+        succeeded = True
+        print('THE HEADLINES WERE FETCHED')
+    except TimeoutException:
+        print('TMED OUT RETRYING ...')
 
+
+
+timedout_headlines = []
 for titles, href in headlines:
-    # Ignore the article if it's not supported
-    if not is_article_supported(href) : continue
-    article = get_article(driver, href)
-    if article is None : continue
-    else:
-        date, content = article
-        for title in titles:
-            print("Article title: " + title + "\n"
-            + "Article href: " + href + "\n"
-            + "Article date: " + date + "\n\n"
-            + "Article content:\n" + content + "\n"
-            + "-------------------------------------------------------------------------\n")
+    try:
+        # Ignore the article if it's not supported
+        if not is_article_supported(href) : continue
+        article = get_article(driver, href)
+        if article is None : continue
+        else:
+            date, content = article
+            for title in titles:
+                print("Article title: " + title + "\n"
+                + "Article href: " + href + "\n"
+                + "Article date: " + date + "\n\n"
+                + "Article content:\n" + content + "\n"
+                + "-------------------------------------------------------------------------\n")
+    except TimeoutException:
+        print('_________________________TIMEOUT EXCEPTION____________________________________')
+        print('with title: ' + str(titles) + '\n\n')
+        print('href: ' + href + '\n\n')
+        timedout_headlines.append((titles, href))
 
+# temporary placeholder for URL that timed out 
+temp_timedout_headlines = []
+
+if len(timedout_headlines) == 0:
+    print('All titles were retrieved')
+
+else:
+    for i in range(3):
+        print("Trying to retrieve the problematic headlines for the :" + str(i) + "th time")
+        for element in timedout_headlines:
+            titles, href = element
+            try:
+                # Ignore the article if it's not supported
+                if not is_article_supported(href) : continue
+                article = get_article(driver, href)
+                if article is None : continue
+                else:
+                    date, content = article
+                    for title in titles:
+                        print("Article title: " + title + "\n"
+                        + "Article href: " + href + "\n"
+                        + "Article date: " + date + "\n\n"
+                        + "Article content:\n" + content + "\n"
+                        + "-------------------------------------------------------------------------\n")
+                print('SUCEEDED to retrieve previously timed out href')                
+            except TimeoutException:
+                print('_________________________TIMEOUT EXCEPTION____________________________________')
+                print('with title: ' + str(titles) + '\n\n')
+                print('href: ' + href + '\n\n')
+                temp_timedout_headlines.append(element)
+        
+        if len(temp_timedout_headlines) == 0 : break
+        timedout_headlines = temp_timedout_headlines
+        temp_timedout_headlines = []
+            
 
 
