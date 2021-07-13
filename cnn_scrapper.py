@@ -3,6 +3,7 @@ from selenium.common.exceptions import TimeoutException
 from phantomjs import phantom
 import datetime
 from selenium.webdriver.firefox.options import Options
+import pandas as pd
 # Convert month name to month number
 month_to_num = {
     'january': 1,
@@ -190,7 +191,9 @@ while not succeeded:
     except TimeoutException:
         print('TMED OUT RETRYING ...')
 
-
+# The records for the file
+# It will be a list of tuples of (title, href, date, content)
+records = []
 
 timedout_headlines = []
 for titles, href in headlines:
@@ -202,11 +205,9 @@ for titles, href in headlines:
         else:
             date, content = article
             for title in titles:
-                print("Article title: " + title + "\n"
-                + "Article href: " + href + "\n"
-                + "Article date: " + date + "\n\n"
-                + "Article content:\n" + content + "\n"
-                + "-------------------------------------------------------------------------\n")
+                # Add a record for the data file
+                records.append((title, href, date, content))
+        print('Retrieved one article')
     except TimeoutException:
         print('_________________________TIMEOUT EXCEPTION____________________________________')
         print('with title: ' + str(titles) + '\n\n')
@@ -232,11 +233,8 @@ else:
                 else:
                     date, content = article
                     for title in titles:
-                        print("Article title: " + title + "\n"
-                        + "Article href: " + href + "\n"
-                        + "Article date: " + date + "\n\n"
-                        + "Article content:\n" + content + "\n"
-                        + "-------------------------------------------------------------------------\n")
+                        # Add a record for the data file
+                        records.append((title, href, date, content))
                 print('SUCEEDED to retrieve previously timed out href')                
             except TimeoutException:
                 print('_________________________TIMEOUT EXCEPTION____________________________________')
@@ -248,5 +246,7 @@ else:
         timedout_headlines = temp_timedout_headlines
         temp_timedout_headlines = []
             
-
-
+# Create a dataframe from the cnn articles
+df = pd.DataFrame(records, columns=['title', 'href', 'date', 'content'])
+# Export the dataframe as an .xlsx file
+df.to_excel('data/output.xlsx')
