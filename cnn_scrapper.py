@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from phantomjs import phantom
 import datetime
 from selenium.webdriver.firefox.options import Options
 import pandas as pd
