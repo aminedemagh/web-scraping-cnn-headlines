@@ -12,3 +12,15 @@ This app uses [Selenium webdriver](https://www.selenium.dev/). It is a tool that
 
 Note that you also need to update [Firefox](https://www.mozilla.org/en-US/firefox/new/) to the latest version. 
 
+### Installation
+
+You need to install Selenium using the command below:
+
+`pip install selenium`
+
+You also need to install [Pandas](https://pandas.pydata.org/docs/index.html), a library for data manipulation and analysis. You can either install it with pip :
+
+`pip install pandas`
+
+Or with [Anaconda](https://www.anaconda.com/), a python distribution with a focus on data science. If you’re interested in Anaconda you can follow their [installation guide](https://www.anaconda.com/distribution/).
+
