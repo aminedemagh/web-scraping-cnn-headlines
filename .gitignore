@@ -1,4 +1,4 @@
 *.log
 *.exe
 *.sqlite
-data
+*.xlsx
