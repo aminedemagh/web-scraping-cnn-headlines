@@ -24,3 +24,25 @@ You also need to install [Pandas](https://pandas.pydata.org/docs/index.html), a 
 
 Or with [Anaconda](https://www.anaconda.com/), a python distribution with a focus on data science. If you’re interested in Anaconda you can follow their [installation guide](https://www.anaconda.com/distribution/).
 
+### Running the app
+
+Before running the app, you need to make sure that `cnn_scrapper.py` and `geckodriver.exe` are in the same folder. After that, run `cnn_scrapper.py` in your terminal:
+
+`python cnn_scrapper.py` 
+
+The program will take around 5 mins to retrieve the headlines and their corresponding articles. You should see something like the image below in your terminal: 
+
+![app in terminal in VScode](docs/cnn_scraper_terminal.png)
+
+After finishing, the results will be saved in `output.xlsx` in the `data` folder. 
+
+![The retrieved headlines in output.xlsx](docs/retrieved_title_vs_cnn.png)
+
+Below is a complete walkthrough of the app:
+
+[![App Walkthrough](docs/cnn_yt_vid.png)](https://www.youtube.com/watch?v=ufXxqxkRzAY)
+
+
+
+
+
