@@ -8,7 +8,7 @@ This app uses [Selenium webdriver](https://www.selenium.dev/). It is a tool that
 
 ### Files used
 - `cnn_scrapper.py` : the file that contains the code for extracting the data.
-- `geckodriver.exe` : the driver that Selenium needs to take control of Firefox. You can dowload it from [here](https://github.com/mozilla/geckodriver/releases). 
+- `geckodriver.exe` : the driver that Selenium needs to take control of Firefox. You can download it from [here](https://github.com/mozilla/geckodriver/releases). 
 
 Note that you also need to update [Firefox](https://www.mozilla.org/en-US/firefox/new/) to the latest version. 
 
