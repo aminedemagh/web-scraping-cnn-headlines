@@ -42,6 +42,11 @@ Below is a complete walkthrough of the app:
 
 [![App Walkthrough](docs/cnn_yt_vid.png)](https://www.youtube.com/watch?v=ufXxqxkRzAY)
 
+### Credits
+
+Thanks to [Selenium](https://www.selenium.dev/) for making such a great product open to everyone.
+
+Thanks to [CNN](https://edition.cnn.com/) for their content. 
 
 
 
